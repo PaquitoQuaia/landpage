@@ -1,0 +1,328 @@
+<!doctype html>
+
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Cadastro Truck Parts</title>
+
+  <style>
+
+    /* remover margem padrão e aplicar fonte */
+    body {
+      margin: 0;
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+
+      background: url("{{ url_for('static', filename='imagens/scania.jpg') }}")
+        center/cover no-repeat fixed;
+
+      color: #111;
+      position: relative;
+    }
+
+    /* overlay vermelho de baixa opacidade */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* garantir que o conteúdo fique acima do overlay */
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cor-fonte {
+      color: rgb(235, 234, 234);
+    }
+
+    /* FORMULÁRIO */
+    fieldset {
+      width: 300px;
+      max-width: 100%;
+      display: inline-block;
+      padding: 0 10px 15px;
+      margin: 20px auto;
+      border-radius: 6px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+      box-sizing: border-box;
+      font-size: 13px;
+      background-color: rgba(255, 255, 255, 0.92);
+    }
+
+    fieldset p {
+      margin: 6px 0;
+    }
+
+    fieldset label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    fieldset input {
+      width: 100%;
+      padding: 5px 6px;
+      font-size: 13px;
+      line-height: 1.1;
+      box-sizing: border-box;
+    }
+
+    fieldset input[type="radio"],
+    fieldset input[type="checkbox"] {
+      width: auto;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .opcoes {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      margin-top: 6px;
+      text-align: left;
+    }
+
+    .opcao {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: #111;
+      width: auto;
+      margin: 0;
+    }
+
+    /* BOTÃO */
+    fieldset button {
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      background-color: #e30613;
+      color: white;
+      border-radius: 4px;
+      margin-top: 6px;
+
+      transition:
+        background-color 0.12s ease,
+        color 0.12s ease,
+        transform 0.12s ease;
+    }
+
+    fieldset button:hover {
+      background-color: white;
+      color: #e30613;
+      transform: translateY(-1px) scale(1.02);
+      border: 1px solid #e30613;
+    }
+
+    /* LINK */
+    .fieldset a:hover {
+      background-color: white;
+      transform: scale(1.15);
+    }
+
+    legend {
+      font-size: 14px;
+      padding: 0 4px;
+    }
+
+    /* FAIXA VERMELHA */
+    .menu {
+      height: 65px;
+      background-color: #e30613;
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: calc(100% + 20px);
+      margin-left: -10px;
+      margin-bottom: 15px;
+
+      box-sizing: border-box;
+
+      font-size: 24px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <form action="/enviar" method="post">
+
+    <fieldset>
+
+      <h1 class="menu">Cadastro Truck Parts</h1>
+
+      <p style="margin: 0 0 10px;">
+        Preencha os campos e compre conosco
+      </p>
+
+      <p>
+        <label for="nome">Nome:</label>
+
+        <input
+          type="text"
+          id="nome"
+          name="nome"
+          placeholder="Digite seu nome completo"
+          autocomplete="name"
+          required
+        />
+      </p>
+
+      <p>
+        <label for="email">E-mail:</label>
+
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Digite seu e-mail"
+          autocomplete="email"
+          required
+        />
+      </p>
+
+      <p>
+        <label for="endereco">Endereço:</label>
+
+        <input
+          type="text"
+          id="endereco"
+          name="endereco"
+          placeholder="Digite seu endereço completo"
+          autocomplete="street-address"
+          required
+        />
+      </p>
+
+      <p>
+        <label for="senha">Senha:</label>
+
+        <input
+          type="password"
+          id="senha"
+          name="senha"
+          placeholder="Digite sua senha"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        />
+      </p>
+
+      <p>
+        <label for="confirmar-senha">Confirmar senha:</label>
+
+        <input
+          type="password"
+          id="confirmar-senha"
+          name="confirmar_senha"
+          placeholder="Digite sua senha novamente"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        />
+      </p>
+
+      <p>
+        <label>Tipo de cadastro:</label>
+
+        <div class="opcoes">
+
+          <label class="opcao">
+            <input
+              type="radio"
+              name="tipo_cadastro"
+              value="pessoa_fisica"
+              required
+            />
+            Pessoa Física
+          </label>
+
+          <label class="opcao">
+            <input
+              type="radio"
+              name="tipo_cadastro"
+              value="pessoa_juridica"
+            />
+            Pessoa Jurídica
+          </label>
+
+          <label class="opcao">
+            <input
+              type="radio"
+              name="tipo_cadastro"
+              value="revendedor"
+            />
+            Revendedor
+          </label>
+
+        </div>
+      </p>
+
+      <p>
+        <label>Áreas de interesse:</label>
+
+        <div class="opcoes">
+
+          <label class="opcao">
+            <input
+              type="checkbox"
+              name="interesses"
+              value="mecanica"
+            />
+            Mecanica
+          </label>
+
+          <label class="opcao">
+            <input
+              type="checkbox"
+              name="interesses"
+              value="eletrica"
+            />
+            Elétrica
+          </label>
+
+          <label class="opcao">
+            <input
+              type="checkbox"
+              name="interesses"
+              value="acessorios"
+            />
+            Acessórios
+          </label>
+
+          <label class="opcao">
+            <input
+              type="checkbox"
+              name="interesses"
+              value="pneus"
+            />
+            Pneus
+          </label>
+
+        </div>
+      </p>
+
+      <button type="submit">Enviar</button>
+
+    </fieldset>
+
+  </form>
+
+</body>
+
+</html>

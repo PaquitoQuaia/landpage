@@ -1,0 +1,1388 @@
+<!doctype html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Truck Parts</title>
+
+    <style>
+      /* CONFIGURAÇÕES GERAIS */
+
+      html {
+        scroll-behavior: smooth;
+        interpolate-size: allow-keywords;
+      }
+
+      /* RESET */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* BODY */
+
+      body {
+        background-color: white;
+        color: black;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      /* PARTE BRANCA DO HEADER */
+
+      .topo {
+        height: 90px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 40px;
+        position: relative;
+      }
+
+      /* LOGO */
+
+      .logo {
+        width: 160px;
+        height: 80px;
+        position: absolute;
+        left: 40px;
+        object-fit: contain;
+      }
+
+      /* USUÁRIO + CARRINHO + MENU */
+
+      .container-usuario {
+        position: absolute;
+        right: 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      /* PERFIL */
+
+      .perfil-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      .perfil-btn:hover {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+
+      .perfil-btn:active {
+        transform: scale(0.95);
+      }
+
+      .perfil-btn img {
+        display: block;
+        object-fit: contain;
+      }
+
+      /* CARRINHO */
+
+      .carrinho-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      .carrinho-btn:hover {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+
+      .carrinho-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* MENU DOS TRÊS RISQUINHOS */
+
+      .menu-simples {
+        position: relative;
+      }
+
+      .menu-simples summary {
+        list-style: none;
+        cursor: pointer;
+        user-select: none;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        width: 30px;
+        height: 24px;
+
+        transition: transform 0.2s ease;
+      }
+
+      .menu-simples summary:active {
+        transform: scale(0.95);
+      }
+
+      .menu-simples summary::-webkit-details-marker {
+        display: none;
+      }
+
+      /* BARRINHAS */
+
+      .menu-simples summary span {
+        display: block;
+        width: 100%;
+        height: 4px;
+        background-color: black;
+        border-radius: 2px;
+
+        transition:
+          transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+          opacity 0.2s ease;
+      }
+
+      /* MENU ABERTO */
+
+      .menu-simples[open] summary span:nth-child(1) {
+        transform: translateY(10px) rotate(45deg);
+      }
+
+      .menu-simples[open] summary span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .menu-simples[open] summary span:nth-child(3) {
+        transform: translateY(-10px) rotate(-45deg);
+      }
+
+      /* DROPDOWN */
+
+      .dropdown {
+        position: absolute;
+        right: 0;
+        top: 35px;
+        width: 180px;
+
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+        z-index: 100;
+        overflow: hidden;
+
+        height: 0;
+        opacity: 0;
+        padding: 0 8px;
+
+        transition:
+          height 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+          opacity 0.2s ease,
+          padding 0.35s ease;
+      }
+
+      .menu-simples[open] .dropdown {
+        height: auto;
+        opacity: 1;
+        padding: 8px;
+      }
+
+      .dropdown a {
+        display: block;
+        padding: 10px;
+        color: black;
+        text-decoration: none;
+        font-size: 14px;
+        border-radius: 5px;
+      }
+
+      .dropdown a:hover {
+        background-color: #f0f0f0;
+      }
+
+      /* MENU VERMELHO */
+
+      .menu {
+        height: 65px;
+        background-color: #e30613;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 10px;
+      }
+
+      .menu a {
+        display: inline-block;
+        color: black;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 25px;
+        transition: 0.3s;
+      }
+
+      .menu a:hover {
+        color: white;
+        transform: scale(1.1);
+      }
+
+      /* CARROSSEL */
+
+      .carrossel {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        margin-top: 0;
+      }
+
+      /* FUNDO VERMELHO SOBRE A IMAGEM */
+
+      .carrossel::before {
+        content: "";
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        background-color: rgba(197, 1, 1, 0.719);
+
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      /* TEXTO + IMAGEM SOBRE O CARROSSEL */
+
+      .conteudo-carrossel {
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 500px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 90px;
+
+        z-index: 3;
+      }
+
+      /* TEXTO DO SLOGAN */
+
+      .texto-carrossel {
+        width: 50%;
+      }
+
+      .texto-carrossel h1 {
+        color: white;
+        text-align: left;
+
+        font-size: 30px;
+        font-weight: bold;
+        line-height: 1.2;
+
+        margin: 0;
+      }
+
+      @keyframes fadeTexto {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      .texto2,
+      .texto3 {
+        display: none;
+      }
+
+      #slide1:checked ~ .conteudo-carrossel .texto1 {
+        display: block;
+        animation: fadeTexto 0.8s ease-in-out;
+      }
+
+      #slide2:checked ~ .conteudo-carrossel .texto1 {
+        display: none;
+      }
+
+      #slide2:checked ~ .conteudo-carrossel .texto2 {
+        display: block;
+        animation: fadeTexto 0.8s ease-in-out;
+      }
+
+      #slide3:checked ~ .conteudo-carrossel .texto1 {
+        display: none;
+      }
+
+      #slide3:checked ~ .conteudo-carrossel .texto3 {
+        display: block;
+        animation: fadeTexto 0.8s ease-in-out;
+      }
+
+      /* IMAGEM AO LADO DO TEXTO */
+
+      .imagem-carrossel {
+        width: 45%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .imagem-carrossel img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      /* ESCONDER RADIO */
+
+      .carrossel input {
+        display: none;
+      }
+
+      /* FAIXA DOS SLIDES */
+
+      .slides {
+        display: flex;
+        width: 300%;
+        transition: transform 0.6s ease;
+      }
+
+      /* CADA SLIDE */
+
+      .slide {
+        width: 33.333333%;
+        flex-shrink: 0;
+      }
+
+      /* IMAGENS DO CARROSSEL */
+
+      .slide img {
+        width: 100%;
+        height: 500px;
+        display: block;
+        object-fit: cover;
+      }
+
+      /* ANIMAÇÃO FADE DA IMAGEM */
+
+      @keyframes fadeImagem {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* SLIDE 1 */
+
+      #slide1:checked ~ .slides {
+        transform: translateX(0);
+      }
+
+      #slide1:checked ~ .slides .slide:nth-child(1) {
+        animation: fadeImagem 0.8s ease-in-out;
+      }
+
+      /* SLIDE 2 */
+
+      #slide2:checked ~ .slides {
+        transform: translateX(-33.333333%);
+      }
+
+      #slide2:checked ~ .slides .slide:nth-child(2) {
+        animation: fadeImagem 0.8s ease-in-out;
+      }
+
+      /* SLIDE 3 */
+
+      #slide3:checked ~ .slides {
+        transform: translateX(-66.666666%);
+      }
+
+      #slide3:checked ~ .slides .slide:nth-child(3) {
+        animation: fadeImagem 0.8s ease-in-out;
+      }
+
+      /* NAVEGAÇÃO */
+
+      .navegacao {
+        position: absolute;
+
+        bottom: 25px;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        display: flex;
+        gap: 10px;
+
+        z-index: 10;
+      }
+
+      /* BOLINHAS */
+
+      .navegacao label {
+        width: 13px;
+        height: 13px;
+
+        background-color: white;
+        border-radius: 50%;
+
+        cursor: pointer;
+        opacity: 0.6;
+
+        transition: 0.3s;
+      }
+
+      .navegacao label:hover {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+
+      /* BOLINHA ATIVA */
+
+      #slide1:checked ~ .navegacao label:nth-child(1),
+      #slide2:checked ~ .navegacao label:nth-child(2),
+      #slide3:checked ~ .navegacao label:nth-child(3) {
+        opacity: 1;
+        transform: scale(1.25);
+      }
+
+      /* SOBRE NÓS */
+
+      .sobrenos {
+        width: 100%;
+        padding: 60px 20px;
+
+        text-align: center;
+
+        background-color: white;
+      }
+
+      .sobrenos h1 {
+        font-size: 50px;
+        font-style: normal;
+
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
+        color: rgb(112, 6, 6);
+      }
+
+      .faixa-listrada {
+        background: repeating-linear-gradient(
+          -45deg,
+          #ffffff 0,
+          #d0d0d0 18px,
+          #ffffff 18px,
+          #d0d0d0 36px
+        );
+
+        width: 100%;
+        padding-bottom: 30px;
+      }
+
+      .sobrenos h1::after {
+        content: "";
+
+        display: block;
+
+        width: 200px;
+        height: 5px;
+
+        background-color: #e30613;
+
+        margin: 10px auto 0;
+      }
+
+      .sobrenos p {
+        font-size: 25px;
+        font-style: normal;
+
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
+        color: black;
+      }
+
+      /* CAIXAS ABAIXO DAS FOTOS DO SOBRE NÓS */
+
+      .informacoes {
+        width: 100%;
+        margin-top: 0;
+      }
+
+      .imagens-informacoes {
+        width: 100%;
+        display: flex;
+      }
+
+      .imagens-informacoes img {
+        width: 33.333%;
+        height: 200px;
+
+        object-fit: cover;
+        display: block;
+      }
+
+      .textos-informacoes {
+        width: 100%;
+        display: flex;
+      }
+
+      .texto-vermelho,
+      .texto-branco {
+        width: 50%;
+        min-height: 150px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 30px 80px;
+
+        text-align: center;
+      }
+
+      .texto-vermelho {
+        background-color: #e30613;
+        color: white;
+      }
+
+      .texto-branco {
+        background-color: white;
+        color: black;
+      }
+
+      .texto-vermelho p,
+      .texto-branco p {
+        font-size: 17px;
+        line-height: 1.3;
+        margin: 0;
+      }
+
+      /* IMAGENS DOS PRODUTOS POR SLIDE */
+
+      .produto-slide {
+        display: none !important;
+      }
+
+      @keyframes fadeProduto {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* PRODUTO DO SLIDE 1 */
+
+      #slide1:checked ~ .conteudo-carrossel .produto1 {
+        display: block !important;
+        animation: fadeProduto 0.8s ease-in-out;
+      }
+
+      /* PRODUTO DO SLIDE 2 */
+
+      #slide2:checked ~ .conteudo-carrossel .produto2 {
+        display: block !important;
+        animation: fadeProduto 0.8s ease-in-out;
+      }
+
+      /* PRODUTO DO SLIDE 3 */
+
+      #slide3:checked ~ .conteudo-carrossel .produto3 {
+        display: block !important;
+        animation: fadeProduto 0.8s ease-in-out;
+      }
+
+      /* PRODUTO 1 */
+
+      .imagem-carrossel .produto1 {
+        width: 700px !important;
+        max-width: none !important;
+        height: auto !important;
+      }
+
+      /* PRODUTO 2 */
+
+      .imagem-carrossel .produto2 {
+        width: 700px !important;
+        max-width: none !important;
+        height: auto !important;
+      }
+
+      /* PRODUTO 3 */
+
+      .imagem-carrossel .produto3 {
+        width: 550px !important;
+        max-width: none !important;
+        height: auto !important;
+      }
+
+      /* CONTATO */
+
+      .contato {
+        width: 100%;
+        padding: 60px 20px;
+
+        text-align: center;
+
+        background-color: white;
+      }
+
+      .contato h1 {
+        font-size: 50px;
+        font-style: normal;
+
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
+        color: rgb(112, 6, 6);
+      }
+
+      .contato h1::after {
+        content: "";
+
+        display: block;
+
+        width: 200px;
+        height: 5px;
+
+        background-color: #e30613;
+
+        margin: 10px auto 0;
+      }
+
+      .contato p {
+        font-size: 25px;
+        font-style: normal;
+
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
+        color: black;
+      }
+
+      .dados-contato {
+        width: 100%;
+        max-width: 600px;
+
+        margin: 30px auto 0;
+        padding: 30px;
+
+        background-color: rgb(255, 255, 255);
+        border-radius: 50px;
+      }
+
+      .dados-contato p {
+        font-size: 18px;
+        line-height: 1.5;
+        margin: 10px 0;
+      }
+ 
+      /* PRODUTOS */
+
+      .produtos-servicos {
+        background: #fff;
+        padding: 70px 50px 55px;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      /* TÍTULO */
+
+      .titulo-produtos h1 {
+        margin: 0;
+        font-size: 46px;
+        font-weight: 800;
+        color: #222;
+        letter-spacing: -1px;
+      }
+
+      /* LINHA EMBAIXO DO TÍTULO */
+
+      .linha-titulo {
+        width: 300px;
+        height: 5px;
+
+        margin: 10px auto 28px;
+
+        background: #e30613;
+
+        position: relative;
+      }
+
+      /* DETALHE CINZA DA LINHA */
+
+      .linha-titulo::after {
+        content: "";
+
+        position: absolute;
+
+        right: 0;
+        top: 0;
+
+        width: 70px;
+        height: 5px;
+
+        background: #333;
+      }
+
+      /* DESCRIÇÃO */
+
+      .descricao-produtos {
+        max-width: 1000px;
+
+        margin: 0 auto;
+
+        font-size: 17px;
+        line-height: 1.6;
+
+        color: #333;
+      }
+
+      /* =========================================
+   CATEGORIAS
+========================================= */
+
+      .categorias {
+        max-width: 1200px;
+        margin: 55px auto 25px;
+        /* grid replaced by slider */
+        display: block;
+      }
+
+      /* Slider for produtos-servicos */
+      .prod-slider { position: relative; width: 100%; max-width: 1200px; margin: 0 auto; overflow: hidden; }
+      .prod-slides { display: flex; width: 300%; transition: transform 0.6s ease; }
+      .prod-slide { width: 33.3333%; display: flex; gap: 35px; justify-content: center; padding: 20px 0; box-sizing: border-box; }
+      .prod-slide .categoria { width: calc(50% - 17.5px); }
+
+      #p_slide1:checked ~ .prod-slider .prod-slides { transform: translateX(0%); }
+      #p_slide2:checked ~ .prod-slider .prod-slides { transform: translateX(-33.3333%); }
+      #p_slide3:checked ~ .prod-slider .prod-slides { transform: translateX(-66.6666%); }
+
+      /* arrows */
+      .prod-nav { position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); display:flex; justify-content:space-between; pointer-events:none }
+      .prod-nav button { pointer-events:auto; background: rgba(0,0,0,0.5); border:0; color:#fff; width:36px; height:36px; border-radius:18px; cursor:pointer }
+      .prod-nav button:focus{ outline:2px solid #fff }
+
+      /* autoplay pause hint */
+      .prod-slider:hover { cursor:default }
+
+      /* bolinhas (indicators) styling */
+      .bolinhas { display:flex; justify-content:center; margin-top:12px; position:relative; z-index:20 }
+      .bolinhas .navegacao { display:flex; gap:12px }
+      .bolinhas .navegacao label { width:14px; height:14px; background:#d5d5d5; border-radius:50%; display:inline-block; cursor:pointer; transition: transform 0.18s ease, background 0.18s ease; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.18) }
+
+      /* Active indicator when radio is checked */
+      #p_slide1:checked ~ .prod-slider ~ .bolinhas .navegacao label:nth-child(1),
+      #p_slide2:checked ~ .prod-slider ~ .bolinhas .navegacao label:nth-child(2),
+      #p_slide3:checked ~ .prod-slider ~ .bolinhas .navegacao label:nth-child(3) {
+        background: #e30613;
+        transform: scale(1.25);
+      }
+
+      /* CARD */
+
+      .categoria {
+        cursor: pointer;
+
+        transition: 0.3s;
+      }
+
+      .categoria:hover {
+        transform: translateY(-7px);
+      }
+
+      /* ÁREA DA IMAGEM */
+
+      .imagem-categoria {
+        height: 190px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #fff;
+      }
+
+      /* IMAGEM */
+
+      .imagem-categoria img {
+        max-width: 190px;
+        max-height: 170px;
+
+        object-fit: contain;
+
+        transition: 0.3s;
+      }
+
+      .categoria:hover .imagem-categoria img {
+        transform: scale(1.06);
+      }
+
+      /* NOME */
+
+      .categoria h2 {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        margin: 12px 0 0;
+
+        font-size: 19px;
+
+        color: #292929;
+      }
+
+      /* CÍRCULO VERMELHO */
+
+      .categoria h2 span {
+        width: 20px;
+        height: 20px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #e30613;
+
+        color: white;
+
+        border-radius: 50%;
+
+        font-size: 21px;
+
+        line-height: 18px;
+
+        font-weight: bold;
+      }
+
+      /* =========================================
+   BOLINHAS
+========================================= */
+
+      .bolinhas {
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 10px;
+
+        margin-top: 45px;
+      }
+
+      .bolinhas span {
+        width: 10px;
+        height: 10px;
+
+        display: block;
+
+        background: #d5d5d5;
+
+        border-radius: 50%;
+
+        transition: 0.3s;
+      }
+
+      .bolinhas .ativa {
+        background: #e30613;
+
+        transform: scale(1.15);
+      }
+
+      /* =========================================
+   RESPONSIVIDADE
+========================================= */
+
+      @media (max-width: 900px) {
+        .categorias {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .produtos-servicos {
+          padding: 50px 20px;
+        }
+
+        .titulo-produtos h1 {
+          font-size: 34px;
+        }
+
+        .linha-titulo {
+          width: 220px;
+        }
+
+        .descricao-produtos {
+          font-size: 15px;
+        }
+
+        .categorias {
+          grid-template-columns: 1fr 1fr;
+
+          gap: 20px;
+        }
+
+        .imagem-categoria {
+          height: 140px;
+        }
+
+        .imagem-categoria img {
+          max-width: 130px;
+          max-height: 120px;
+        }
+
+        .categoria h2 {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+
+    <header>
+      <!-- PARTE BRANCA -->
+
+      <div class="topo">
+        <!-- LOGO -->
+
+        <img
+          src="{{ url_for('static', filename='imagens/logo.png') }}"
+          alt="Logo Truck Parts"
+          class="logo"
+        />
+
+        <!-- USUÁRIO + CARRINHO + MENU -->
+
+        <div class="container-usuario">
+          <!-- CARRINHO -->
+
+          <a
+            href="{{ url_for('carrinho') }}"
+            class="carrinho-btn"
+            title="Carrinho"
+          >
+            <img
+              src="{{ url_for('static', filename='imagens/carrinho.png') }}"
+              width="35"
+              height="35"
+              alt="Ícone do carrinho de compras"
+            />
+          </a>
+
+          <!-- PERFIL -->
+
+          <a
+            href="{{ url_for('cadastro') }}"
+            class="perfil-btn"
+            title="Minha Conta"
+          >
+            <img
+              src="{{ url_for('static', filename='imagens/Avatar_perfil.png') }}"
+              width="60"
+              height="50"
+              alt="Ícone de perfil do usuário"
+            />
+          </a>
+
+          <!-- MENU DOS TRÊS RISCOS -->
+
+          <details class="menu-simples">
+            <summary aria-label="Abrir menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </summary>
+
+            <div class="dropdown">
+              <a href="#"> Ajuda e Suporte </a>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- PARTE VERMELHA -->
+
+      <nav class="menu">
+        <a href="#sobre"> SOBRE NÓS </a>
+
+        <a href="#"> PRODUTOS </a>
+
+        <a href="{{ url_for('catalogo') }}"> CATÁLOGO </a>
+
+        <a href="#contato"> CONTATO </a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- CARROSSEL -->
+
+      <section class="carrossel">
+        <!-- CONTROLES -->
+
+        <input type="radio" name="slide" id="slide1" checked />
+
+        <input type="radio" name="slide" id="slide2" />
+
+        <input type="radio" name="slide" id="slide3" />
+
+        <!-- TEXTO + IMAGEM -->
+
+        <div class="conteudo-carrossel">
+          <!-- TEXTO À ESQUERDA -->
+
+          <div class="texto-carrossel">
+            <!-- TEXTO DO SLIDE 1 -->
+
+            <h1 class="texto1">
+              QUALIDADE E CONFIANÇA
+
+              <br />
+
+              PARA MANTER O SEU CAMINHÃO
+
+              <br />
+
+              NA ESTRADA
+            </h1>
+
+            <!-- TEXTO DO SLIDE 2 -->
+
+            <h1 class="texto2">
+              PEÇAS DE QUALIDADE
+
+              <br />
+
+              PARA QUEM NÃO PODE PARAR
+            </h1>
+
+            <!-- TEXTO DO SLIDE 3 -->
+
+            <h1 class="texto3">
+              TRUCK PARTS
+
+              <br />
+
+              FORÇA PARA SEGUIR EM FRENTE
+            </h1>
+          </div>
+
+          <!-- IMAGEM À DIREITA -->
+
+          <div class="imagem-carrossel">
+            <!-- PRODUTO DO SLIDE 1 -->
+
+            <img
+              class="produto-slide produto1"
+              src="{{ url_for('static', filename='imagens/carrosel_produtos1.png') }}"
+              alt="Peça em destaque no slide 1"
+            />
+
+            <!-- PRODUTO DO SLIDE 2 -->
+
+            <img
+              class="produto-slide produto2"
+              src="{{ url_for('static', filename='imagens/pcarrosel_rodutos2.png') }}"
+              alt="Peça em destaque no slide 2"
+            />
+
+            <!-- PRODUTO DO SLIDE 3 -->
+
+            <img
+              class="produto-slide produto3"
+              src="{{ url_for('static', filename='imagens/carrosel_produtos.png') }}"
+              alt="Peça em destaque no slide 3"
+            />
+          </div>
+        </div>
+
+        <!-- SLIDES -->
+
+        <div class="slides">
+          <!-- PRIMEIRO SLIDE -->
+
+          <div class="slide">
+            <img
+              src="{{ url_for('static', filename='imagens/carrosel_sobreposto1.jpeg') }}"
+              alt="Banner promocional 1 da Truck Parts"
+            />
+          </div>
+
+          <!-- SEGUNDO SLIDE -->
+
+          <div class="slide">
+            <img
+              src="{{ url_for('static', filename='imagens/carrosel_sobreposto2.jpeg') }}"
+              alt="Banner promocional 2 da Truck Parts"
+            />
+          </div>
+
+          <!-- TERCEIRO SLIDE -->
+
+          <div class="slide">
+            <img
+              src="{{ url_for('static', filename='imagens/carrosel_sobreposto.jpeg') }}"
+              alt="Banner promocional 3 da Truck Parts"
+            />
+          </div>
+        </div>
+
+        <!-- NAVEGAÇÃO -->
+
+        <div class="navegacao">
+          <label for="slide1"></label>
+
+          <label for="slide2"></label>
+
+          <label for="slide3"></label>
+        </div>
+      </section>
+
+      <!-- SOBRE NÓS -->
+
+      <section class="faixa-listrada sobrenos" id="sobre">
+        <h1>SOBRE NÓS</h1>
+
+        <p>
+          A Truck Parts entrega peças de qualidade e confiança para quem mantém
+          o Brasil em movimento.
+        </p>
+
+        <p>
+          Soluções que garantem desempenho, segurança e força para o seu
+          caminhão seguir sempre em frente.
+        </p>
+      </section>
+
+      <section class="informacoes">
+        <div class="imagens-informacoes">
+          <img
+            src="{{ url_for('static', filename='imagens/images.jpg') }}"
+            alt="Peças para caminhões"
+          />
+
+          <img
+            src="{{ url_for('static', filename='imagens/chassi.jpg') }}"
+            alt="Sistema de suspensão"
+          />
+
+          <img
+            src="{{ url_for('static', filename='imagens/distribuidora.webp') }}"
+            alt="Peças automotivas"
+          />
+        </div>
+
+        <div class="textos-informacoes">
+          <div class="texto-vermelho">
+            <p>
+              Nossa missão é atender as necessidades de nossos clientes com
+              qualidade e segurança.
+            </p>
+          </div>
+
+          <div class="texto-branco">
+            <p>
+              Trabalhamos com empresas em nível nacional e internacional
+              fornecendo as melhores marcas para nossos clientes.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUTOS-->
+
+      <section class="produtos-servicos">
+        <div class="titulo-produtos">
+          <h1>Produtos / Serviços</h1>
+          <div class="linha-titulo"></div>
+        </div>
+
+        <p class="descricao-produtos">
+          Na Truck Parts você encontra peças e componentes para caminhões, com
+          qualidade e confiança para manter seu veículo sempre em movimento.
+          <br />
+          Confira abaixo algumas de nossas principais categorias.
+        </p>
+
+        <!-- PRODUTOS SLIDER (2 por slide) -->
+        <input type="radio" name="p_slide" id="p_slide1" checked style="display:none">
+        <input type="radio" name="p_slide" id="p_slide2" style="display:none">
+        <input type="radio" name="p_slide" id="p_slide3" style="display:none">
+
+        <div class="prod-slider">
+          <div class="prod-slides">
+            <div class="prod-slide">
+              <div class="categoria">
+                <div class="imagem-categoria">
+                  <img src="{{ url_for('static', filename='imagens/freio.jpg') }}" alt="Peças de freio" />
+                </div>
+                <h2><span>›</span>Freios</h2>
+              </div>
+              <div class="categoria">
+                <div class="imagem-categoria">
+                  <img src="{{ url_for('static', filename='imagens/motor.jpg') }}" alt="Peças de motor" />
+                </div>
+                <h2><span>›</span>Motor</h2>
+              </div>
+            </div>
+
+            <div class="prod-slide">
+              <div class="categoria">
+                <div class="imagem-categoria">
+                  <img src="{{ url_for('static', filename='imagens/suspensão.webp') }}" alt="Peças de suspensão" />
+                </div>
+                <h2><span>›</span>Suspensão</h2>
+              </div>
+              <div class="categoria">
+                <div class="imagem-categoria">
+                  <img src="{{ url_for('static', filename='imagens/filtro.jpg') }}" alt="Filtros" />
+                </div>
+                <h2><span>›</span>Filtros</h2>
+              </div>
+            </div>
+
+            <div class="prod-slide">
+              <div class="categoria">
+                <div class="imagem-categoria">
+                  <img src="{{ url_for('static', filename='imagens/freio.jpg') }}" alt="Peças de freio" />
+                </div>
+                <h2><span>›</span>Freios</h2>
+              </div>
+              <div class="categoria">
+                <div class="imagem-categoria">
+                  <img src="{{ url_for('static', filename='imagens/motor.jpg') }}" alt="Peças de motor" />
+                </div>
+                <h2><span>›</span>Motor</h2>
+              </div>
+            </div>
+          </div>
+          <div class="prod-nav" aria-hidden="false">
+            <button id="prod-prev" aria-label="Anterior">‹</button>
+            <button id="prod-next" aria-label="Próximo">›</button>
+          </div>
+        </div>
+
+        <!-- BOLINHAS -->
+        <div class="bolinhas">
+          <div class="navegacao">
+            <label for="p_slide1"></label>
+            <label for="p_slide2"></label>
+            <label for="p_slide3"></label>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTATO -->
+
+      <section class="faixa-listrada contato" id="contato">
+        <h1>CONTATO</h1>
+
+        <p>Entre em contato com a Truck Parts.</p>
+
+        <div class="dados-contato">
+          <p>
+            <strong>Telefone:</strong>
+            (55) 94915-1878
+          </p>
+
+          <p>
+            <strong>E-mail:</strong>
+            truckparts@hotmail.com
+          </p>
+
+          <p>
+            <strong>Endereço:</strong>
+            São Paulo - SP
+          </p>
+        </div>
+      </section>
+    </main>
+    <script>
+      (function(){
+        const slides = 3;
+        let index = 1;
+        let timer = null;
+        const intervalMs = 3500;
+
+        function go(i){
+          index = ((i-1+slides)%slides)+1;
+          const el = document.getElementById('p_slide'+index);
+          if(el) el.checked = true;
+        }
+
+        function next(){ go(index+1); }
+        function prev(){ go(index-1); }
+
+        function start(){ stop(); timer = setInterval(next, intervalMs); }
+        function stop(){ if(timer){ clearInterval(timer); timer = null } }
+
+        document.addEventListener('DOMContentLoaded', function(){
+          const slider = document.querySelector('.prod-slider');
+          const btnNext = document.getElementById('prod-next');
+          const btnPrev = document.getElementById('prod-prev');
+
+          if(btnNext) btnNext.addEventListener('click', function(e){ e.preventDefault(); next(); start(); });
+          if(btnPrev) btnPrev.addEventListener('click', function(e){ e.preventDefault(); prev(); start(); });
+
+          if(slider){
+            slider.addEventListener('mouseenter', stop);
+            slider.addEventListener('mouseleave', start);
+          }
+
+          // sync index with checked radios on load
+          for(let i=1;i<=slides;i++){
+            const r = document.getElementById('p_slide'+i);
+            if(r && r.checked){ index = i; break; }
+            if(i===slides) start();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

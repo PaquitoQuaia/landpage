@@ -1,0 +1,218 @@
+<!doctype html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login Truck Parts</title>
+
+    <style>
+      /* remover margem padrão e aplicar fonte */
+
+      body {
+        margin: 0;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        min-height: 100vh;
+
+        background-image: url("{{ url_for('static', filename='imagens/scania124.jpg') }}");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+
+        color: #111;
+        position: relative;
+      }
+      /* camada sobre a imagem */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-color: transparent;
+        pointer-events: none;
+        z-index: 0;
+      }
+      /* garantir que o conteúdo fique acima */
+
+      body > * {
+        position: relative;
+
+        z-index: 1;
+      }
+
+      /* FORMULÁRIO */
+
+      fieldset {
+        width: 300px;
+
+        max-width: 100%;
+
+        display: inline-block;
+
+        padding: 0 10px 15px;
+
+        margin: 20px auto;
+
+        border-radius: 6px;
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+        box-sizing: border-box;
+
+        font-size: 13px;
+
+        background-color: rgba(255, 255, 255, 0.92);
+      }
+
+      fieldset p {
+        margin: 8px 0;
+      }
+
+      fieldset label {
+        display: block;
+
+        margin-bottom: 4px;
+
+        font-size: 12px;
+      }
+
+      fieldset input {
+        width: 100%;
+
+        padding: 7px 6px;
+
+        font-size: 13px;
+
+        line-height: 1.1;
+
+        box-sizing: border-box;
+
+        border: 1px solid #ccc;
+
+        border-radius: 4px;
+      }
+
+      /* BOTÃO */
+
+      fieldset button {
+        padding: 7px 15px;
+
+        font-size: 13px;
+
+        cursor: pointer;
+
+        border: none;
+
+        background-color: #e30613;
+
+        color: white;
+
+        border-radius: 4px;
+
+        margin-top: 8px;
+
+        transition:
+          background-color 0.12s ease,
+          color 0.12s ease,
+          transform 0.12s ease;
+      }
+
+      fieldset button:hover {
+        background-color: white;
+
+        color: #e30613;
+
+        transform: translateY(-1px) scale(1.02);
+
+        border: 1px solid #e30613;
+      }
+
+      /* LINK PARA CADASTRO */
+
+      .cadastro-link {
+        display: block;
+
+        margin-top: 12px;
+
+        color: #e30613;
+
+        text-decoration: none;
+
+        font-size: 13px;
+      }
+
+      .cadastro-link:hover {
+        text-decoration: underline;
+      }
+
+      /* FAIXA VERMELHA */
+
+      .menu {
+        height: 65px;
+
+        background-color: #e30613;
+
+        color: white;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: calc(100% + 20px);
+
+        margin-left: -10px;
+
+        margin-bottom: 15px;
+
+        box-sizing: border-box;
+
+        font-size: 24px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form action="/login" method="post">
+      <fieldset>
+        <h1 class="menu">Login Truck Parts</h1>
+
+        <p style="margin: 0 0 15px">Entre para acessar sua conta</p>
+
+        <p>
+          <label for="email"> E-mail: </label>
+
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Digite seu e-mail"
+            autocomplete="email"
+            required
+          />
+        </p>
+
+        <p>
+          <label for="senha"> Senha: </label>
+
+          <input
+            type="password"
+            id="senha"
+            name="senha"
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+            required
+          />
+        </p>
+
+        <button type="submit">Entrar</button>
+
+        <a href="/cadastro" class="cadastro-link"> Ainda não tenho cadastro </a>
+      </fieldset>
+    </form>
+  </body>
+</html>

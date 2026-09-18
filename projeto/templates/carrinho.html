@@ -1,0 +1,401 @@
+<!doctype html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Carrinho Truck Parts</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f5f5;
+        color: #222;
+      }
+
+      /* ================================
+         TOPO
+      ================================= */
+
+      .menu {
+        height: 75px;
+        background: #e30613;
+        color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 25px;
+        font-weight: bold;
+
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* ================================
+         CONTAINER
+      ================================= */
+
+      .carrinho {
+        width: 92%;
+        max-width: 1000px;
+        margin: 35px auto 50px;
+      }
+
+      /* ================================
+         TÍTULO
+      ================================= */
+
+      .titulo {
+        text-align: left;
+        margin-bottom: 25px;
+      }
+
+      .titulo h1 {
+        margin: 0;
+        font-size: 30px;
+        color: #222;
+      }
+
+      .titulo p {
+        margin-top: 7px;
+        color: #777;
+        font-size: 15px;
+      }
+
+      /* ================================
+         PRODUTO
+      ================================= */
+
+      .produto {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+
+        padding: 18px;
+
+        margin-bottom: 14px;
+
+        background: #fff;
+
+        border-radius: 12px;
+
+        border: 1px solid #e8e8e8;
+
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+
+        transition: 0.2s;
+      }
+
+      .produto:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.09);
+      }
+
+      /* ================================
+         IMAGEM
+      ================================= */
+
+      .imagem-produto {
+        width: 120px;
+        height: 95px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #f7f7f7;
+
+        border-radius: 10px;
+      }
+
+      .imagem-produto img {
+        max-width: 100%;
+        max-height: 90px;
+
+        object-fit: contain;
+      }
+
+      /* ================================
+         INFORMAÇÕES
+      ================================= */
+
+      .informacoes {
+        flex: 1;
+      }
+
+      .informacoes h2 {
+        margin: 0;
+
+        font-size: 18px;
+        color: #333;
+      }
+
+      .informacoes p {
+        margin: 7px 0 0;
+
+        color: #888;
+        font-size: 14px;
+      }
+
+      /* ================================
+         PREÇO
+      ================================= */
+
+      .preco {
+        color: #e30613;
+
+        font-weight: bold;
+        font-size: 18px;
+
+        min-width: 130px;
+
+        text-align: right;
+      }
+
+      /* ================================
+         BOTÃO REMOVER
+      ================================= */
+
+      .remover {
+        background: #fff0f0;
+
+        border: 1px solid #ffd1d1;
+
+        color: #e30613;
+
+        padding: 8px 12px;
+
+        border-radius: 7px;
+
+        cursor: pointer;
+
+        font-size: 13px;
+
+        transition: 0.2s;
+      }
+
+      .remover:hover {
+        background: #e30613;
+        color: #fff;
+      }
+
+      /* ================================
+         TOTAL
+      ================================= */
+
+      .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        margin-top: 25px;
+        padding: 22px;
+
+        background: #fff;
+
+        border-radius: 12px;
+
+        border: 1px solid #e5e5e5;
+
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .total div:first-child {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .valor-total {
+        color: #e30613;
+
+        font-size: 26px;
+        font-weight: bold;
+      }
+
+      /* ================================
+         CARRINHO VAZIO
+      ================================= */
+
+      .vazio {
+        background: #fff;
+
+        padding: 55px 25px;
+
+        text-align: center;
+
+        border-radius: 14px;
+
+        border: 1px solid #e5e5e5;
+
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      }
+
+      .vazio h2 {
+        margin-bottom: 8px;
+      }
+
+      .vazio p {
+        color: #777;
+      }
+
+      .vazio a {
+        display: inline-block;
+
+        margin-top: 10px;
+
+        padding: 11px 22px;
+
+        background: #e30613;
+        color: #fff;
+
+        text-decoration: none;
+
+        border-radius: 7px;
+
+        font-weight: bold;
+
+        transition: 0.2s;
+      }
+
+      .vazio a:hover {
+        background: #b9000b;
+      }
+
+      /* ================================
+         BOTÃO VOLTAR
+      ================================= */
+
+      .voltar {
+        display: block;
+
+        width: fit-content;
+
+        margin: 25px auto 0;
+
+        color: #e30613;
+
+        text-decoration: none;
+
+        font-size: 15px;
+        font-weight: bold;
+
+        transition: 0.2s;
+      }
+
+      .voltar:hover {
+        color: #a90009;
+        text-decoration: underline;
+      }
+
+      /* ================================
+         RESPONSIVIDADE
+      ================================= */
+
+      @media (max-width: 700px) {
+        .menu {
+          font-size: 21px;
+        }
+
+        .produto {
+          flex-wrap: wrap;
+        }
+
+        .imagem-produto {
+          width: 100px;
+          height: 80px;
+        }
+
+        .informacoes {
+          min-width: calc(100% - 125px);
+        }
+
+        .preco {
+          text-align: left;
+          min-width: auto;
+        }
+
+        .remover {
+          margin-left: auto;
+        }
+
+        .total {
+          padding: 18px;
+        }
+
+        .valor-total {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 class="menu">Truck Parts</h1>
+
+    <main class="carrinho">
+      <div class="titulo">
+        <h1>MEU CARRINHO</h1>
+        <p>Confira os produtos selecionados antes de continuar.</p>
+      </div>
+
+      {% if items %} {% for it in items %}
+
+      <div class="produto">
+        <div class="imagem-produto">
+          <img
+            src="{{ url_for('static', filename=it.produto.imagem) }}"
+            alt="{{ it.produto.nome }}"
+          />
+        </div>
+
+        <div class="informacoes">
+          <h2>{{ it.produto.nome }}</h2>
+
+          <p>Peça automotiva Truck Parts</p>
+        </div>
+
+        <div class="preco">R$ {{ "%.2f" % it.produto.preco }}</div>
+
+        <form
+          method="post"
+          action="{{ url_for('remove_from_cart', product_id=it.produto.id) }}"
+        >
+          <button class="remover" type="submit">Remover</button>
+        </form>
+      </div>
+
+      {% endfor %}
+
+      <div class="total">
+        <div>Total do pedido</div>
+
+        <div class="valor-total">R$ {{ "%.2f" % total }}</div>
+      </div>
+
+      {% else %}
+
+      <div class="vazio">
+        <h2>Seu carrinho está vazio</h2>
+
+        <p>Adicione produtos ao carrinho para continuar.</p>
+
+        <p>
+          <a href="{{ url_for('catalogo') }}"> Ir para o catálogo </a>
+        </p>
+      </div>
+
+      {% endif %}
+
+      <a class="voltar" href="{{ url_for('land') }}">
+        ← Voltar para a página inicial
+      </a>
+    </main>
+  </body>
+</html>

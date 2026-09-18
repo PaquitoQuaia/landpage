@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Catálogo - Truck Parts</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f5f5;
+        color: #222;
+      }
+
+      /* =========================================
+       TOPO
+    ========================================= */
+
+      .topo {
+        height: 90px;
+        background: white;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: relative;
+
+        border-bottom: 1px solid #ddd;
+      }
+
+      .search-bar {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+        max-width: 430px;
+
+        background: #f1f1f1;
+
+        border-radius: 30px;
+
+        padding: 5px 15px;
+
+        border: 1px solid #ddd;
+      }
+
+      .search-bar input {
+        flex: 1;
+
+        border: none;
+        outline: none;
+
+        background: transparent;
+
+        padding: 11px;
+
+        font-size: 16px;
+      }
+
+      .search-bar button {
+        border: none;
+        background: none;
+
+        font-size: 19px;
+
+        cursor: pointer;
+      }
+
+      /* =========================================
+       CARRINHO
+    ========================================= */
+
+      .container-usuario {
+        position: absolute;
+
+        right: 40px;
+
+        display: flex;
+        align-items: center;
+      }
+
+      .carrinho-btn {
+        text-decoration: none;
+
+        display: flex;
+        align-items: center;
+
+        transition: 0.2s;
+      }
+
+      .carrinho-btn:hover {
+        transform: scale(1.08);
+      }
+
+      /* =========================================
+       MENU
+    ========================================= */
+
+      .menu {
+        height: 60px;
+
+        background: #e30613;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 55px;
+      }
+
+      .menu a {
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 15px;
+
+        font-weight: bold;
+
+        transition: 0.2s;
+      }
+
+      .menu a:hover {
+        opacity: 0.75;
+      }
+
+      /* =========================================
+       CABEÇALHO
+    ========================================= */
+
+      .cabecalho-catalogo {
+        background: white;
+
+        text-align: center;
+
+        padding: 55px 20px 40px;
+      }
+
+      .cabecalho-catalogo h1 {
+        margin: 0;
+
+        font-size: 44px;
+
+        color: #222;
+      }
+
+      .linha {
+        width: 220px;
+        height: 5px;
+
+        background: #e30613;
+
+        margin: 12px auto 20px;
+      }
+
+      .cabecalho-catalogo p {
+        margin: 0;
+
+        color: #666;
+
+        font-size: 16px;
+      }
+
+      /* =========================================
+       ÁREA DE FILTROS
+    ========================================= */
+
+      .area-filtros {
+        width: 92%;
+        max-width: 1200px;
+
+        margin: 35px auto 25px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        gap: 20px;
+
+        flex-wrap: wrap;
+      }
+
+      .titulo-filtro {
+        font-size: 19px;
+
+        font-weight: bold;
+      }
+
+      .filtro {
+        display: flex;
+
+        gap: 15px;
+
+        align-items: center;
+      }
+
+      .seletor {
+        min-width: 260px;
+
+        padding: 13px 15px;
+
+        background: white;
+
+        border: 1px solid #ddd;
+
+        border-radius: 8px;
+
+        font-size: 15px;
+
+        cursor: pointer;
+
+        outline: none;
+      }
+
+      .seletor:focus {
+        border-color: #e30613;
+      }
+
+      /* =========================================
+       CONTADOR
+    ========================================= */
+
+      .contador {
+        width: 92%;
+        max-width: 1200px;
+
+        margin: 0 auto 20px;
+
+        color: #777;
+
+        font-size: 14px;
+      }
+
+      /* =========================================
+       GRID
+    ========================================= */
+
+      .grid {
+        width: 92%;
+        max-width: 1200px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 22px;
+      }
+
+      /* =========================================
+       CARD
+    ========================================= */
+
+      .card {
+        background: white;
+
+        border: 1px solid #e2e2e2;
+
+        border-radius: 12px;
+
+        padding: 15px;
+
+        text-align: center;
+
+        min-height: 360px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: space-between;
+
+        overflow: hidden;
+
+        transition: 0.25s;
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+
+        border-color: #e30613;
+
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      /* =========================================
+       IMAGEM
+    ========================================= */
+
+      .imagem-produto {
+        height: 190px;
+
+        background: #fafafa;
+
+        border-radius: 9px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        margin-bottom: 14px;
+
+        overflow: hidden;
+      }
+
+      .imagem-produto img {
+        max-width: 90%;
+
+        max-height: 175px;
+
+        object-fit: contain;
+
+        transition: 0.25s;
+      }
+
+      .card:hover .imagem-produto img {
+        transform: scale(1.07);
+      }
+
+      /* =========================================
+       CATEGORIA
+    ========================================= */
+
+      .categoria {
+        display: inline-block;
+
+        background: #fff0f0;
+
+        color: #e30613;
+
+        padding: 5px 11px;
+
+        border-radius: 20px;
+
+        font-size: 11px;
+
+        font-weight: bold;
+
+        margin-bottom: 6px;
+      }
+
+      /* =========================================
+       NOME
+    ========================================= */
+
+      .card h3 {
+        margin: 5px 0;
+
+        font-size: 17px;
+
+        min-height: 42px;
+
+        color: #292929;
+      }
+
+      /* =========================================
+       PREÇO
+    ========================================= */
+
+      .price {
+        color: #e30613;
+
+        font-size: 20px;
+
+        font-weight: bold;
+
+        margin: 10px 0 15px;
+      }
+
+      /* =========================================
+       BOTÃO
+    ========================================= */
+
+      .add {
+        width: 100%;
+
+        padding: 12px;
+
+        border: none;
+
+        border-radius: 7px;
+
+        background: #e30613;
+
+        color: white;
+
+        font-size: 14px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+      }
+
+      .add:hover {
+        background: #b9000c;
+
+        transform: scale(1.02);
+      }
+
+      /* =========================================
+       SEM PRODUTOS
+    ========================================= */
+
+      .sem-produtos {
+        display: none;
+
+        width: 92%;
+
+        max-width: 700px;
+
+        margin: 40px auto;
+
+        padding: 45px;
+
+        background: white;
+
+        border-radius: 12px;
+
+        text-align: center;
+      }
+
+      .sem-produtos h2 {
+        margin-top: 0;
+      }
+
+      .sem-produtos p {
+        color: #777;
+      }
+
+      /* =========================================
+       LINKS
+    ========================================= */
+
+      .links {
+        width: 92%;
+
+        max-width: 1200px;
+
+        margin: 35px auto 60px;
+
+        display: flex;
+
+        gap: 25px;
+      }
+
+      .links a {
+        color: #e30613;
+
+        text-decoration: none;
+
+        font-weight: bold;
+      }
+
+      .links a:hover {
+        text-decoration: underline;
+      }
+
+      /* =========================================
+       RESPONSIVO
+    ========================================= */
+
+      @media (max-width: 1000px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 750px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .menu {
+          gap: 20px;
+        }
+
+        .menu a {
+          font-size: 12px;
+        }
+
+        .container-usuario {
+          right: 15px;
+        }
+
+        .search-bar {
+          max-width: 330px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .menu {
+          display: none;
+        }
+
+        .cabecalho-catalogo h1 {
+          font-size: 32px;
+        }
+
+        .area-filtros {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .filtro {
+          width: 100%;
+        }
+
+        .seletor {
+          width: 100%;
+        }
+
+        .search-bar {
+          max-width: 270px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =========================================
+       TOPO
+  ========================================= -->
+
+    <header>
+      <div class="topo">
+        <form class="search-bar" action="#" method="get">
+          <input
+            type="text"
+            id="pesquisa"
+            name="q"
+            placeholder="Pesquisar produtos..."
+          />
+
+          <button type="submit">🔍</button>
+        </form>
+
+        <div class="container-usuario">
+          <a href="{{ url_for('carrinho') }}" class="carrinho-btn">
+            <img
+              src="{{ url_for('static', filename='imagens/carrinho.png') }}"
+              width="35"
+              height="35"
+              alt="Carrinho"
+            />
+          </a>
+        </div>
+      </div>
+
+      <!-- MENU -->
+
+      <nav class="menu">
+        <a href="{{ url_for('land') }}"> INÍCIO </a>
+
+        <a href="{{ url_for('land') }}#sobrenos"> SOBRE NÓS </a>
+
+        <a href="{{ url_for('catalogo') }}"> PRODUTOS </a>
+
+        <a href="{{ url_for('land') }}#contato"> CONTATO </a>
+      </nav>
+    </header>
+
+    <!-- =========================================
+       TÍTULO
+  ========================================= -->
+
+    <section class="cabecalho-catalogo">
+      <h1>Produtos / Serviços</h1>
+
+      <div class="linha"></div>
+
+      <p>Encontre peças e componentes para caminhões em diversas categorias.</p>
+    </section>
+
+    <!-- =========================================
+       FILTRO
+  ========================================= -->
+
+    <section class="area-filtros">
+      <div class="titulo-filtro">Encontre sua peça:</div>
+
+      <div class="filtro">
+        <select class="seletor" id="filtroCategoria">
+          <option value="todos">Todos os produtos</option>
+
+          <option value="motor">Motor</option>
+
+          <option value="freios">Freios</option>
+
+          <option value="suspensao">Suspensão</option>
+
+          <option value="eletrica">Elétrica</option>
+
+          <option value="filtros">Filtros</option>
+
+          <option value="embreagem">Embreagem</option>
+
+          <option value="transmissao">Transmissão</option>
+
+          <option value="cabine">Cabine</option>
+
+          <option value="acessorios">Acessórios</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- =========================================
+       CONTADOR
+  ========================================= -->
+
+    <div class="contador">
+      <span id="contadorProdutos"> {{ products|length }} </span>
+
+      produtos encontrados
+    </div>
+
+    <!-- =========================================
+       PRODUTOS
+  ========================================= -->
+
+    <div class="grid" id="gridProdutos">
+      {% for p in products %}
+
+      <div
+        class="card"
+        data-categoria="{{ p.categoria|default('outros')|lower|replace('ã','a')|replace('é','e')|replace('ê','e') }}"
+        data-nome="{{ p.nome|lower }}"
+      >
+        <div>
+          <div class="imagem-produto">
+            <img
+              src="{{ url_for('static', filename=p.imagem) }}"
+              alt="{{ p.nome }}"
+            />
+          </div>
+
+          <span class="categoria"> {{ p.categoria|default('Peças') }} </span>
+
+          <h3>{{ p.nome }}</h3>
+
+          <div class="price">R$ {{ "%.2f" % p.preco }}</div>
+        </div>
+
+        <form
+          method="post"
+          action="{{ url_for('add_to_cart', product_id=p.id) }}"
+        >
+          <input type="hidden" name="next" value="{{ request.path }}" />
+
+          <button class="add" type="submit">Adicionar ao carrinho</button>
+        </form>
+      </div>
+
+      {% endfor %}
+    </div>
+
+    <!-- =========================================
+       NENHUM PRODUTO
+  ========================================= -->
+
+    <div class="sem-produtos" id="semProdutos">
+      <h2>Nenhum produto encontrado</h2>
+
+      <p>Tente pesquisar outro produto ou selecionar outra categoria.</p>
+    </div>
+
+    <!-- =========================================
+       LINKS
+  ========================================= -->
+
+    <div class="links">
+      <a href="{{ url_for('land') }}"> ← Voltar para página inicial </a>
+    </div>
+
+    <!-- =========================================
+       FILTRO E PESQUISA
+  ========================================= -->
+
+    <script>
+      const filtro = document.getElementById("filtroCategoria");
+
+      const pesquisa = document.getElementById("pesquisa");
+
+      const cards = document.querySelectorAll(".card");
+
+      const semProdutos = document.getElementById("semProdutos");
+
+      const contador = document.getElementById("contadorProdutos");
+
+      function normalizar(texto) {
+        return texto
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function filtrarProdutos() {
+        const categoriaSelecionada = normalizar(filtro.value);
+
+        const textoPesquisa = normalizar(pesquisa.value.trim());
+
+        let quantidade = 0;
+
+        cards.forEach(function (card) {
+          const categoria = normalizar(card.dataset.categoria);
+
+          const nome = normalizar(card.dataset.nome);
+
+          const categoriaOk =
+            categoriaSelecionada === "todos" ||
+            categoria === categoriaSelecionada;
+
+          const pesquisaOk =
+            textoPesquisa === "" || nome.includes(textoPesquisa);
+
+          if (categoriaOk && pesquisaOk) {
+            card.style.display = "flex";
+
+            quantidade++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        contador.textContent = quantidade;
+
+        if (quantidade === 0) {
+          semProdutos.style.display = "block";
+        } else {
+          semProdutos.style.display = "none";
+        }
+      }
+
+      filtro.addEventListener("change", filtrarProdutos);
+
+      pesquisa.addEventListener("input", filtrarProdutos);
+    </script>
+  </body>
+</html>
